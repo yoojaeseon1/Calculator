@@ -77,26 +77,26 @@ class Calculator : AbstractOperation() {
         }
     }
 
-    override fun calculateEntireQuationIncludedBracket(equation: String): Number {
+    override fun calculateEntireEquationWithBracket(equation: String): Number {
 
         val splitedEquation = splitNumbersAndOperators(equation)
         val equationStack = Stack<String>()
         val numbersAndOperators = mutableListOf<String>()
-        for(splitElement in splitedEquation) {
-            if(splitElement in setOf("(",")")) {
-                if(numbersAndOperators.size == 0)
+        for (splitElement in splitedEquation) {
+            if (splitElement in setOf("(", ")")) {
+                if (numbersAndOperators.size == 0)
                     continue
-                val lastOperator = numbersAndOperators[numbersAndOperators.size-1]
-                if(splitElement == "(")
-                    numbersAndOperators.removeAt(numbersAndOperators.size-1)
+                val lastOperator = numbersAndOperators[numbersAndOperators.size - 1]
+                if (splitElement == "(")
+                    numbersAndOperators.removeAt(numbersAndOperators.size - 1)
 
-                val partResult = calculateEntireQuation(numbersAndOperators)
-                if(equationStack.isNotEmpty() && equationStack.peek() !in setOf("+","-","*","/"))
+                val partResult = calculateEntireEquation(numbersAndOperators)
+                if (equationStack.isNotEmpty() && equationStack.peek() !in setOf("+", "-", "*", "/"))
                     equationStack.push("+")
 
                 equationStack.push(partResult.toString())
 
-                if(splitElement == "(")
+                if (splitElement == "(")
                     equationStack.push(lastOperator)
 
                 numbersAndOperators.clear()
@@ -104,25 +104,25 @@ class Calculator : AbstractOperation() {
                 numbersAndOperators.add(splitElement)
         }
 
-        for(numberAndOperator in numbersAndOperators)
+        for (numberAndOperator in numbersAndOperators)
             equationStack.push(numberAndOperator)
 
 
         val toList = equationStack.toMutableList()
-        for (element in toList) {
-            print("${element}, ")
-        }
+//        for (element in toList) {
+//            print("${element}, ")
+//        }
 
-        val answer = calculateEntireQuation(toList).toDouble()
+        val answer = calculateEntireEquation(toList).toDouble()
         if (answer - answer.toInt() == 0.0)
             return answer.toInt()
 
         return answer
     }
 
-    override fun calculateEntireQuation(splitedEquation: MutableList<String>): Number {
+    override fun calculateEntireEquation(splitedEquation: MutableList<String>): Number {
         val equationStack = Stack<String>()
-        if(splitedEquation[0] in setOf("+", "-")) {
+        if (splitedEquation[0] in setOf("+", "-")) {
             splitedEquation.add(0, "0")
         }
 
@@ -143,7 +143,7 @@ class Calculator : AbstractOperation() {
 
         var answer = equationStack[0].toDouble()
         var stackIndex = 1
-        while(stackIndex < equationStack.size) {
+        while (stackIndex < equationStack.size) {
             val numberOrOperator = equationStack[stackIndex++]
             if (numberOrOperator in setOf("+", "-")) {
                 val input = equationStack[stackIndex++].toDouble()
@@ -161,12 +161,12 @@ class Calculator : AbstractOperation() {
 
         val numbersAndOperators = mutableListOf<String>()
         val operators = mutableListOf('+', '-', '*', '/')
-        val brackets = mutableListOf('(',')')
+        val brackets = mutableListOf('(', ')')
         val numberSB = StringBuilder()
 
-        for(equationChar in equation) {
-            if(operators.contains(equationChar) || brackets.contains(equationChar)) {
-                if(numberSB.isNotEmpty()) {
+        for (equationChar in equation) {
+            if (operators.contains(equationChar) || brackets.contains(equationChar)) {
+                if (numberSB.isNotEmpty()) {
                     numbersAndOperators.add(numberSB.toString())
                     numberSB.clear()
                 }
@@ -175,24 +175,9 @@ class Calculator : AbstractOperation() {
                 numberSB.append(equationChar)
         }
 
-        if(numberSB.isNotEmpty())
+        if (numberSB.isNotEmpty())
             numbersAndOperators.add(numberSB.toString())
 
         return numbersAndOperators
     }
-}
-
-fun main() {
-
-    val calculator = Calculator()
-
-//    val equation = "100+3*15-123/2"
-//    val equation = "3+(100*2+(3-2*100)-100)+5"
-    val equation = "(3+2-(4-5))+3"
-//    val equation = "3+((3+5)-2)"
-
-//    print(calculator.splitNumbersAndOperators(equation).toString())
-//    print(calculator.calculateEntireQuation(equation))
-    println(calculator.calculateEntireQuationIncludedBracket(equation))
-
 }

@@ -1,19 +1,16 @@
 package level5
 
-import java.util.*
-
 fun main() {
 
-//    val calculator = Calculator()
-//
-//    calculator.execute()
+    val calculator = Calculator()
 
-//    val regex1 = "^[0-9\\+\\-\\*\\/]*$"
-    val regex1 = "^[0-9]*$"
-    val equation = "5*3+145/22-3"
+//    val equation = "100+3*15-123/2"
+//    val equation = "3+(100*2+(3-2*100)-100)+5"
+    val equation = "(3+2-(4-5))+3"
+//    val equation = "3+((3+5)-2)"
 
-    val splitedEquation = equation.split(regex1.toRegex())
-
-    println(splitedEquation.toString())
+//    print(calculator.splitNumbersAndOperators(equation).toString())
+//    print(calculator.calculateEntireQuation(equation))
+    println(calculator.calculateEntireEquationWithBracket(equation))
 
 }
